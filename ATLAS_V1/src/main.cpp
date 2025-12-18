@@ -18,10 +18,18 @@
  * to keep execution time for this mode under a few seconds.
  */
 
+LV_IMAGE_DECLARE(configv3);
+LV_IMAGE_DECLARE(autonv3);
 void display_img_from_c_array() {
-	LV_IMAGE_DECLARE(configv2);
-	lv_obj_t*img = lv_image_create(lv_screen_active());
-	lv_image_set_src(img, &configv2);
+
+	lv_obj_t*img1 = lv_image_create(lv_screen_active());
+	lv_image_set_src(img1, &configv3);
+	lv_obj_align(img1,LV_ALIGN_TOP_LEFT, 272, 80);
+
+	lv_obj_t*img2 = lv_image_create(lv_screen_active());
+	lv_image_set_src(img2, &autonv3);
+	lv_obj_align(img2,LV_ALIGN_TOP_LEFT, 100, 80);
+
 }
 
 void display_img_from_file(const void * src){
