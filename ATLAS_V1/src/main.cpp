@@ -24,12 +24,13 @@ void display_img_from_c_array() {
 
 	lv_obj_t*img1 = lv_image_create(lv_screen_active());
 	lv_image_set_src(img1, &configv3);
-	lv_obj_align(img1,LV_ALIGN_TOP_LEFT, 272, 80);
+	lv_obj_align(img1,LV_ALIGN_TOP_LEFT, 40, 10);
+	lv_arclabel_set_text(arclabel, "Config")
 
 	lv_obj_t*img2 = lv_image_create(lv_screen_active());
 	lv_image_set_src(img2, &autonv3);
-	lv_obj_align(img2,LV_ALIGN_TOP_LEFT, 100, 80);
-
+	lv_obj_align(img2,LV_ALIGN_TOP_LEFT, 40, 130);
+	lv_arclabel_set_text(arclabel, "Auton")
 }
 
 void display_img_from_file(const void * src){
