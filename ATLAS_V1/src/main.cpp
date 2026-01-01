@@ -25,12 +25,11 @@ void display_img_from_c_array() {
 	lv_obj_t*img1 = lv_image_create(lv_screen_active());
 	lv_image_set_src(img1, &configv3);
 	lv_obj_align(img1,LV_ALIGN_TOP_LEFT, 40, 10);
-	lv_arclabel_set_text(arclabel, "Config")
 
 	lv_obj_t*img2 = lv_image_create(lv_screen_active());
 	lv_image_set_src(img2, &autonv3);
 	lv_obj_align(img2,LV_ALIGN_TOP_LEFT, 40, 130);
-	lv_arclabel_set_text(arclabel, "Auton")
+
 }
 
 void display_img_from_file(const void * src){
@@ -86,10 +85,73 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
-	
 
+void opcontrol() {
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
+	pros::MotorGroup left_mg({-13, -6, 5});
+	pros::MotorGroup right_mg({14, 11, -12});
+	pros::adi::Pneumatics descore({17, 'a'}, false);   
+	pros::adi::Pneumatics double_park({17, 'b'}, false);  
+	pros::adi::Pneumatics scraper({17, 'c'}, false);  
+	pros::adi::Pneumatics redirect({17, 'd'}, false);  
+	right_mg.set_gearing(pros::E_MOTOR_GEARSET_06);
+	left_mg.set_gearing(pros::E_MOTOR_GEARSET_06);
+	
 	while (true) {
-		pros::delay(20);                               // Run for 20 ms then update
-	}
+	
+        int power = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y); 
+        int turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+
+     
+        int left = power + turn;
+        int right = power - turn;
+		
+        left_mg.move(left);
+        right_mg.move(right);
+
+		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+			stage1(127);
+		}
+
+		else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+			stage1(-127);
+		}
+
+		else{
+			stage1(0);
+		}
+
+		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+			stage2(127);
+		}
+
+		else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+			stage2(-127);
+		}
+
+		else{
+			stage2(0);
+		}
+
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+       		descore.toggle();
+		}
+
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+       		double_park.toggle();
+		}
+
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+       		scraper.toggle();
+		}
+
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+       		redirect.toggle();
+		}
+
+	
+        // A small delay is necessary to prevent the brain from overloading
+        pros::delay(20); 
+	} 	                         // Run for 20 ms then update                        // Run for 20 ms then update
+	
 }
