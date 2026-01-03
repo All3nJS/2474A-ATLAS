@@ -1,22 +1,86 @@
+#include "lemlib/api.hpp" // IWYU pragma: keep
 #include "main.h"
 #include "liblvgl/display/lv_display.h"
 #include "liblvgl/misc/lv_area.h"
 #include "liblvgl/widgets/image/lv_image.h"
 
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
+//Controller
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+
+//Drivetrain motorgroups
+pros::MotorGroup left_mg({-13, -6, 5}, pros::MotorGearset::blue);
+pros::MotorGroup right_mg({14, 11, -12}, pros::MotorGearset::blue);
+//right_mg.set_gearing(pros::E_MOTOR_GEARSET_06);
+//left_mg.set_gearing(pros::E_MOTOR_GEARSET_06);
+
+// drivetrain settings
+lemlib::Drivetrain drivetrain(&left_mg, // left motor group
+                              &right_mg, // right motor group
+                              12, // 12 inch track width
+                              lemlib::Omniwheel::NEW_275, // using new 2.75" omnis
+                              450, // drivetrain rpm is 450
+                              2 // horizontal drift is 2 (for now)
+);
+
+// input curve for throttle input during driver control
+lemlib::ExpoDriveCurve throttle_curve(3, // joystick deadband out of 127
+                                     10, // minimum output where drivetrain will move out of 127
+                                     1.019 // expo curve gain
+);
+
+// input curve for steer input during driver control
+lemlib::ExpoDriveCurve steer_curve(3, // joystick deadband out of 127
+                                  10, // minimum output where drivetrain will move out of 127
+                                  1.019 // expo curve gain
+);
 
 
-/**
- * Runs initialization code. This occurs as soon as the program is started.
- *
- * All other competition modes are blocked by initialize; it is recommended
- * to keep execution time for this mode under a few seconds.
- */
+//Sensors
+pros::Imu imu(18);
+pros::Rotation horizontal_rotation_sensor(-20);
+pros::Rotation vertical_rotation_sensor(19);
+
+// horizontal tracking wheel
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_rotation_sensor, lemlib::Omniwheel::NEW_2, -2.74);
+// vertical tracking wheel
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_rotation_sensor, lemlib::Omniwheel::NEW_2, 0.5);
+
+lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1, set to null
+                            &horizontal_tracking_wheel, // horizontal tracking wheel 1
+                            &imu // inertial sensor
+);
+
+
+// lateral PID controller
+lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
+                                              0, // integral gain (kI)
+                                              3, // derivative gain (kD)
+                                              3, // anti windup
+                                              1, // small error range, in inches
+                                              100, // small error range timeout, in milliseconds
+                                              3, // large error range, in inches
+                                              500, // large error range timeout, in milliseconds
+                                              20 // maximum acceleration (slew)
+);
+
+// angular PID controller
+lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
+                                              0, // integral gain (kI)
+                                              10, // derivative gain (kD)
+                                              3, // anti windup
+                                              1, // small error range, in degrees
+                                              100, // small error range timeout, in milliseconds
+                                              3, // large error range, in degrees
+                                              500, // large error range timeout, in milliseconds
+                                              0 // maximum acceleration (slew)
+);
+
+//Pneumatics
+pros::adi::Pneumatics descore({17, 'a'}, false);   
+pros::adi::Pneumatics double_park({17, 'b'}, false);  
+pros::adi::Pneumatics scraper({17, 'c'}, false);  
+pros::adi::Pneumatics redirect({17, 'd'}, false);  
+
 
 LV_IMAGE_DECLARE(configv3);
 LV_IMAGE_DECLARE(autonv3);
@@ -38,7 +102,6 @@ void display_img_from_file(const void * src){
 
 void initialize() {
 	display_img_from_c_array();
-
 }
 
 /**
@@ -87,15 +150,7 @@ void autonomous() {}
  */
 
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::MotorGroup left_mg({-13, -6, 5});
-	pros::MotorGroup right_mg({14, 11, -12});
-	pros::adi::Pneumatics descore({17, 'a'}, false);   
-	pros::adi::Pneumatics double_park({17, 'b'}, false);  
-	pros::adi::Pneumatics scraper({17, 'c'}, false);  
-	pros::adi::Pneumatics redirect({17, 'd'}, false);  
-	right_mg.set_gearing(pros::E_MOTOR_GEARSET_06);
-	left_mg.set_gearing(pros::E_MOTOR_GEARSET_06);
+	
 	
 	while (true) {
 	

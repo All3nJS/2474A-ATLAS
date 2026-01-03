@@ -1,0 +1,6 @@
+[submodule "ATLAS_V1/lib/LemLib"]
+	path = ATLAS_V1/lib/LemLib
+	url = https://github.com/LemLib/LemLib.git
+[submodule "ATLAS_V1/LemLib"]
+	path = ATLAS_V1/LemLib
+	url = https://github.com/LemLib/LemLib.git
