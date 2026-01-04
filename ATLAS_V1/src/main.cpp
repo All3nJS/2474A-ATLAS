@@ -101,11 +101,11 @@ pros::adi::Pneumatics redirect({17, 'd'}, false);
 
 
 
-LV_IMAGE_DECLARE(VEX_screensaver);
+LV_IMAGE_DECLARE(VEX_screensaverv2);
 void display_img_from_c_array() {
 
 	lv_obj_t*img1 = lv_image_create(lv_screen_active());
-	lv_image_set_src(img1, &VEX_screensaver);
+	lv_image_set_src(img1, &VEX_screensaverv2);
 	lv_obj_align(img1,LV_ALIGN_TOP_LEFT, 0, -10);
 
 
