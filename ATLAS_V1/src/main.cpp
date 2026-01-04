@@ -14,7 +14,7 @@ pros::MotorGroup right_mg({14, 11, -12}, pros::MotorGearset::blue);
 //left_mg.set_gearing(pros::E_MOTOR_GEARSET_06);
 
 // drivetrain settings
-lemlib::Drivetrain drivetrain(&left_mg, // left motor group
+lemlib::Drivetrain Drivetrain(&left_mg, // left motor group
                               &right_mg, // right motor group
                               12, // 12 inch track width
                               lemlib::Omniwheel::NEW_275, // using new 2.75" omnis
@@ -25,14 +25,18 @@ lemlib::Drivetrain drivetrain(&left_mg, // left motor group
 // input curve for throttle input during driver control
 lemlib::ExpoDriveCurve throttle_curve(3, // joystick deadband out of 127
                                      10, // minimum output where drivetrain will move out of 127
-                                     1.019 // expo curve gain
+                                     1.019 // expo curve gain  *1.019   #A
 );
 
 // input curve for steer input during driver control
 lemlib::ExpoDriveCurve steer_curve(3, // joystick deadband out of 127
                                   10, // minimum output where drivetrain will move out of 127
-                                  1.019 // expo curve gain
+                                  1.019 // expo curve gain *1.019   #A
 );
+
+
+
+
 
 
 //Sensors
@@ -46,7 +50,9 @@ lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_rotation_sensor, lem
 lemlib::TrackingWheel vertical_tracking_wheel(&vertical_rotation_sensor, lemlib::Omniwheel::NEW_2, 0.5);
 
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1, set to null
+							nullptr,
                             &horizontal_tracking_wheel, // horizontal tracking wheel 1
+							nullptr,
                             &imu // inertial sensor
 );
 
@@ -75,11 +81,24 @@ lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
                                               0 // maximum acceleration (slew)
 );
 
+
+lemlib::Chassis chassis(Drivetrain,
+                        lateral_controller,
+                        angular_controller,
+                        sensors,
+                        &throttle_curve, 
+                        &steer_curve
+);
+
+
+
 //Pneumatics
 pros::adi::Pneumatics descore({17, 'a'}, false);   
 pros::adi::Pneumatics double_park({17, 'b'}, false);  
 pros::adi::Pneumatics scraper({17, 'c'}, false);  
 pros::adi::Pneumatics redirect({17, 'd'}, false);  
+
+
 
 
 LV_IMAGE_DECLARE(configv3);
@@ -157,12 +176,13 @@ void opcontrol() {
         int power = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y); 
         int turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
-     
+
         int left = power + turn;
         int right = power - turn;
 		
-        left_mg.move(left);
-        right_mg.move(right);
+ 
+	 	chassis.arcade(power, turn, false, 0.65); // #A     change num
+
 
 		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
 			stage1(127);
