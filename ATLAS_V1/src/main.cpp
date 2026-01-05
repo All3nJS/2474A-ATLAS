@@ -150,11 +150,12 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
+ASSET(left1_txt);
+
 void autonomous() {
 // set position to x:0, y:0, heading:0
     chassis.setPose(0, 0, 0);
-    chassis.moveToPoint(-50, 50, 10000);
-	chassis.turnToHeading(90, 10000);
+    chassis.follow(left1_txt, 15, 2000);
 }
 /**
  * Runs the operator control code. This function will be started in its own task
