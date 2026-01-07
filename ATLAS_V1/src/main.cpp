@@ -234,7 +234,7 @@ void opcontrol() {
 
 	
         // A small delay is necessary to prevent the brain from overloading
-        pros::delay(20); 
+        pros::delay(21); 
 	} 	                         // Run for 20 ms then update                        // Run for 20 ms then update
 	
 }
