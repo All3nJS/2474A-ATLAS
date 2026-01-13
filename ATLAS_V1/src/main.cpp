@@ -112,12 +112,76 @@ void display_img_from_c_array() {
 
 }
 
-void display_img_from_file(const void * src){
+void menu(void)
+{	
+	
+	static lv_style_t style;
+    lv_style_init(&style);
+
+	static lv_style_t style1;
+    lv_style_init(&style1);
+	
+
+    /*Create a menu object*/
+    lv_obj_t * menu = lv_menu_create(lv_screen_active());
+    lv_obj_set_size(menu, lv_display_get_horizontal_resolution(NULL), lv_display_get_vertical_resolution(NULL));
+    lv_obj_center(menu);
+
+	lv_obj_t * back_btn = lv_menu_get_main_header_back_button(menu);
+    lv_obj_t * back_button_label = lv_label_create(back_btn);
+    lv_label_set_text(back_button_label, "Back");
+
+	lv_obj_t * label;
+
+    lv_obj_t * btn1 = lv_obj_create(lv_screen_active());
+    lv_obj_add_style(btn1, &style, 0);
+    lv_obj_set_pos(btn1, 20, 140); 
+    lv_obj_remove_flag(btn1, LV_OBJ_FLAG_PRESS_LOCK);
+
+
+    label = lv_label_create(btn1);
+    lv_label_set_text(label, "Red Autos");
+    lv_obj_center(label);
+	
+	lv_obj_set_style_bg_color(btn1, lv_palette_main(LV_PALETTE_RED), LV_PART_MAIN);
+	lv_style_set_width(&style, 200);
+    lv_style_set_height(&style, LV_SIZE_CONTENT);
+
+	lv_obj_t * btn2 = lv_obj_create(lv_screen_active());
+    lv_obj_add_style(btn2, &style, 0);
+    lv_obj_set_pos(btn2, 20, 60); 
+    lv_obj_remove_flag(btn2, LV_OBJ_FLAG_PRESS_LOCK);
+
+
+    label = lv_label_create(btn2);
+    lv_label_set_text(label, "Blue Autos");
+    lv_obj_center(label);
+	
+	lv_obj_set_style_bg_color(btn2, lv_palette_main(LV_PALETTE_BLUE), LV_PART_MAIN);
+	lv_style_set_width(&style, 200);
+    lv_style_set_height(&style, LV_SIZE_CONTENT);
+
+
+	lv_obj_t * btn3 = lv_obj_create(lv_screen_active());
+    lv_obj_add_style(btn3, &style1, 0);
+    lv_obj_set_pos(btn3, 300, 60); 
+    lv_obj_remove_flag(btn3, LV_OBJ_FLAG_PRESS_LOCK);
+
+
+    label = lv_label_create(btn3);
+    lv_label_set_text(label, "Settings");
+    lv_obj_center(label);
+	
+	lv_obj_set_style_bg_color(btn3, lv_palette_main(LV_PALETTE_GREY), LV_PART_MAIN);
+	lv_style_set_width(&style1, 150);
+	lv_style_set_height(&style1, 250);
+    lv_style_set_height(&style1, LV_SIZE_CONTENT);
 
 }
 
 void initialize() {
-	display_img_from_c_array();
+	// display_img_from_c_array();
+	menu();
 	chassis.calibrate();
 }
 
@@ -157,6 +221,7 @@ void autonomous() {
 	chassis.setPose(-62.549, 16.342, 0);
 	stage1(127);
 	chassis.follow(leftfirst_txt, 15, 2000);
+	chassis.moveToPose(-11.687, 11.45, 175, 4000);
 	chassis.waitUntil(50);
 	stage1(0);
 
