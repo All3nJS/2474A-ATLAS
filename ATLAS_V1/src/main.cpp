@@ -112,6 +112,12 @@ void display_img_from_c_array() {
 
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+void display_img_from_file(const void * src){
+=======
+>>>>>>> bhavesh
 void menu(void)
 {	
 	
@@ -120,22 +126,33 @@ void menu(void)
 
 	static lv_style_t style1;
     lv_style_init(&style1);
+<<<<<<< HEAD
 	
+=======
+>>>>>>> bhavesh
 
     /*Create a menu object*/
     lv_obj_t * menu = lv_menu_create(lv_screen_active());
     lv_obj_set_size(menu, lv_display_get_horizontal_resolution(NULL), lv_display_get_vertical_resolution(NULL));
     lv_obj_center(menu);
 
+<<<<<<< HEAD
 	lv_obj_t * back_btn = lv_menu_get_main_header_back_button(menu);
     lv_obj_t * back_button_label = lv_label_create(back_btn);
     lv_label_set_text(back_button_label, "Back");
+=======
+	
+>>>>>>> bhavesh
 
 	lv_obj_t * label;
 
     lv_obj_t * btn1 = lv_obj_create(lv_screen_active());
     lv_obj_add_style(btn1, &style, 0);
+<<<<<<< HEAD
     lv_obj_set_pos(btn1, 20, 140); 
+=======
+    lv_obj_set_pos(btn1, 158, 180); 
+>>>>>>> bhavesh
     lv_obj_remove_flag(btn1, LV_OBJ_FLAG_PRESS_LOCK);
 
 
@@ -149,7 +166,11 @@ void menu(void)
 
 	lv_obj_t * btn2 = lv_obj_create(lv_screen_active());
     lv_obj_add_style(btn2, &style, 0);
+<<<<<<< HEAD
     lv_obj_set_pos(btn2, 20, 60); 
+=======
+    lv_obj_set_pos(btn2, 0, 180); 
+>>>>>>> bhavesh
     lv_obj_remove_flag(btn2, LV_OBJ_FLAG_PRESS_LOCK);
 
 
@@ -161,6 +182,7 @@ void menu(void)
 	lv_style_set_width(&style, 200);
     lv_style_set_height(&style, LV_SIZE_CONTENT);
 
+<<<<<<< HEAD
 
 	lv_obj_t * btn3 = lv_obj_create(lv_screen_active());
     lv_obj_add_style(btn3, &style1, 0);
@@ -176,6 +198,22 @@ void menu(void)
 	lv_style_set_width(&style1, 150);
 	lv_style_set_height(&style1, 250);
     lv_style_set_height(&style1, LV_SIZE_CONTENT);
+=======
+    lv_obj_t * btn4 = lv_obj_create(lv_screen_active());
+    lv_obj_add_style(btn4, &style, 0);
+    lv_obj_set_pos(btn4, 318, 180); 
+    lv_obj_remove_flag(btn4, LV_OBJ_FLAG_PRESS_LOCK);
+
+
+    label = lv_label_create(btn4);
+    lv_label_set_text(label, "Skills Autos");
+    lv_obj_center(label);
+	
+	lv_obj_set_style_bg_color(btn4, lv_palette_main(LV_PALETTE_GREEN), LV_PART_MAIN);
+	lv_style_set_width(&style, 162);
+    lv_style_set_height(&style, LV_SIZE_CONTENT);
+>>>>>>> Stashed changes
+>>>>>>> bhavesh
 
 }
 
