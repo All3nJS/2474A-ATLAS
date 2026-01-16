@@ -113,9 +113,7 @@ void display_img_from_c_array() {
 
 }
 
-<<<<<<< Updated upstream
-void display_img_from_file(const void * src){
-=======
+
 void menu(void)
 {	
 	
@@ -175,8 +173,6 @@ void menu(void)
 	lv_obj_set_style_bg_color(btn4, lv_palette_main(LV_PALETTE_GREEN), LV_PART_MAIN);
 	lv_style_set_width(&style, 162);
     lv_style_set_height(&style, LV_SIZE_CONTENT);
->>>>>>> Stashed changes
-
 }
 
 void initialize() {
