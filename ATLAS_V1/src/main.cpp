@@ -209,26 +209,124 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-ASSET(leftfirst_txt);
+//ASSET(leftfirst_txt);
 ASSET(leftsecond_txt);
+//ASSET(park_path_txt);
+//ASSET(rightfirst_txt);
+ASSET(rightsecond_txt);
 void autonomous() {
-// set position to x:-62.168, y:16.055, heading:0
-	chassis.setPose(-62.168, 16.055, 0);
-	stage1(127);
-	chassis.follow(leftfirst_txt, 15, 3000);
-	chassis.moveToPose(-7.864, 9, 316, 3000, {.forwards = false});
-	redirect.set_value(false);
-	chassis.waitUntil(27);
-	stage2(127); 
-	chassis.waitUntil(1);
-	scraper.set_value(true);
-	redirect.set_value(true);
-	chassis.follow(leftsecond_txt, 15, 5000);
-	stage2(0);
-	stage1(127);
-	chassis.moveToPose(-26.882, 47.101, 270, 2000, {.forwards = false});
-	stage2(127);
-	chassis.moveToPose(-62.503, 46.818, 270, 2000);
+
+    // left auto
+    chassis.setPose(-50.733, 15.869, 0);
+    chassis.moveToPose(-50.733, 23, 2000);
+    chassis.turnToHeading(90, 2000);
+    chassis.moveToPose(-22.2, 23, 3000);
+    stage1(127);
+    scraper.set_value(true);
+    chassis.turnToHeading(315, 2000);
+    chassis.moveToPose(-8.451, 8.031, 315, 4000);
+    stage2(127);
+    chassis.waitUntil(5);
+    stage2(0);
+    chassis.follow(leftsecond_txt, 15, 5000);
+    chassis.moveToPoint(-25.305, 47.48, 2000, {.forwards = false}); 
+    stage2(127);
+    chassis.waitUntil(10);
+    chassis.moveToPose(-64.893, 46.538, 270, 3000);
+
+    // right auto
+    //chassis.setPose(-50.733, -15.869, 180);
+    //chassis.moveToPose(-50.733, -23, 2000);
+    //chassis.turnToHeading(90, 2000);
+    //chassis.moveToPose(-22.2, -23, 3000);
+    //stage1(127);
+    //scraper.set_value(true);
+    //chassis.turnToHeading(225, 2000);
+    //chassis.moveToPose(-8.451, -8.031, 45, 4000);
+    //stage2(127);
+    //chassis.waitUntil(5);
+    //stage2(0);
+    //chassis.follow(rightsecond_txt, 15, 5000);
+    //chassis.moveToPoint(-25.305, -47.48, 2000, {.forwards = false});
+    //stage2(127);
+    //chassis.waitUntil(10);
+    //chassis.moveToPose(-64.893, -46.538, 270, 3000);
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //left
+    //chassis.setPose(-62.168, 16.055, 0);
+	//stage1(127);
+	//chassis.follow(leftfirst_txt, 15, 3000);
+	//chassis.moveToPose(-7.864, 9, 316, 3000, {.forwards = false});
+	//redirect.set_value(false);
+    //chassis.waitUntil(27);
+	//stage2(127); 
+	//chassis.waitUntil(1);
+	//scraper.set_value(true);
+	//redirect.set_value(false);
+	//chassis.follow(leftsecond_txt, 15, 5000);
+	//stage2(0);
+	//stage1(127);
+	//chassis.moveToPose(-24.317, 44.988, 270, 2000, {.forwards = false});
+    //chassis.waitUntil(10);
+	//stage2(127);
+    //chassis.waitUntil(10);
+	//chassis.moveToPose(-64.274, 44.275, 270, 2000);
+    
+    
+    //skills (run after left)
+    //chassis.moveToPose(-17.954, -0.52, 5000);
+    //chassis.turnToHeading(180, 2000);
+    //stage1(127);
+    //stage2(127);
+    //scaper.set_value(false);
+    //chassis.moveToPose(-62.611, 0);
+
+    //right (run separately)
+    //scraper.set_value(false);
+    //redirect.set_value(true);
+    //descore.set_value(false);
+    //chassis.setPose(-62.294, 16.647, 180);
+    //turnToHeading(165, 2000);
+    //stage1(127); 
+    //chassis.follow(rightfirst_txt, 15, 5000);
+    //chassis.turnToHeading(210, 3000);
+    //scraper.set_value(true);
+    //chassis.follow(rightsecond_txt, 15, 6000);
+    //wait(15);
+    //chassis.moveToPose(-23.798, -47.352, 270, 5000);
+    //wait(5);
+    //stage2(127);
+    //wait(15);
+    //chassis.moveToPose(-66.09, -47.352, 270, 5000);
+
+
+
+
 
 
 
